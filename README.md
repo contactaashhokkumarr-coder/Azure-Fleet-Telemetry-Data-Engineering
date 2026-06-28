@@ -1,35 +1,41 @@
 # 🚛 Azure Fleet Telemetry Data Engineering Platform
 
-An enterprise-scale Azure Data Engineering solution designed to ingest, validate, transform, and orchestrate fleet vehicle telemetry data using a modern cloud-native architecture. This project demonstrates how large transportation and logistics organizations can build scalable, production-ready data pipelines capable of processing high-volume vehicle telemetry for operational reporting, business intelligence, and advanced analytics.
+> **An enterprise-scale Azure Data Engineering solution that ingests, validates, transforms, and orchestrates connected vehicle telemetry using Azure Databricks, Azure Data Factory, Azure Blob Storage, and Azure SQL Database.**
 
 ---
 
-# Project Overview
+# 📖 Overview
 
-Modern fleet operations generate massive volumes of telemetry data from connected vehicles, including GPS coordinates, speed, fuel levels, engine status, driver information, and environmental sensor readings. This project simulates an enterprise fleet management platform that captures these events as JSON data and processes them through an automated Azure Data Engineering pipeline.
+Modern transportation and logistics organizations generate millions of telemetry events from connected fleet vehicles every day. These events include GPS coordinates, speed, fuel levels, engine status, driver information, environmental readings, and operational metrics that must be processed reliably for monitoring, analytics, compliance, and business decision-making.
 
-The solution follows industry-standard ETL and Medallion Architecture principles, ensuring raw data is ingested, validated, transformed, and delivered as trusted, analytics-ready datasets.
+This project simulates a production-grade Azure Data Engineering platform that automates the complete lifecycle of fleet telemetry data—from ingestion through validation and transformation to loading curated datasets into Azure SQL Database.
+
+The solution demonstrates enterprise data engineering practices including **Medallion Architecture**, **modular pipeline orchestration**, **PySpark transformations**, **incremental loading**, **data quality validation**, **SQL verification**, **pipeline auditing**, and **CI/CD integration**.
 
 ---
 
-# Business Scenario
+# 🏢 Business Scenario
 
-A global transportation company operates thousands of commercial vehicles across multiple regions. Every vehicle continuously transmits operational telemetry to the cloud.
+A multinational logistics company operates thousands of connected commercial vehicles across multiple regions. Every vehicle continuously streams telemetry data to the cloud.
 
-The organization requires a centralized data platform capable of:
+The organization requires a centralized platform capable of:
 
-* Ingesting telemetry data from fleet vehicles
+* Collecting high-volume JSON telemetry data
 * Validating incoming records against business rules
-* Transforming raw JSON into structured datasets
-* Performing incremental data loading
-* Orchestrating end-to-end data movement
+* Cleaning and transforming raw data
+* Managing incremental data loads
+* Recording pipeline execution audits
 * Loading curated datasets into Azure SQL Database
-* Supporting enterprise reporting and analytics
-* Maintaining an automated deployment lifecycle using CI/CD
+* Supporting operational reporting and business analytics
+* Automating deployments through CI/CD
+
+This repository demonstrates how such a solution can be implemented using Microsoft Azure services.
 
 ---
 
-# Solution Architecture
+# 🏗 Solution Architecture
+
+The solution follows a modular orchestration pattern where Azure Data Factory coordinates validation, transformation, auditing, and SQL loading.
 
 ```text
 Fleet Vehicles
@@ -38,83 +44,175 @@ Fleet Vehicles
 Azure Blob Storage (Landing)
        │
        ▼
-Azure Databricks
-• JSON Processing
-• PySpark Transformations
-• Data Validation
-• Business Rules
-• Medallion Architecture
+PL_MasterFleetTelemetry
        │
-       ▼
-Azure Blob Storage (Silver Layer)
-       │
-       ▼
-Azure Data Factory
-• Master Pipeline
-• Data Validation Pipeline
-• Azure SQL Copy Pipeline
-• Workflow Orchestration
-       │
-       ▼
-Azure SQL Database
-• Curated Tables
-• Validation Reports
-• Analytics Layer
+ ┌─────┴─────────────────────────────┐
+ │                                   │
+ ▼                                   ▼
+Run_Validation                Run_LoadToSQL
+(Execute Pipeline)          (Execute Pipeline)
+ │                                   │
+ ▼                                   ▼
+PL_Databricks_Validation      Copy_Staging_SQL
+ │                                   │
+ ▼                                   ▼
+Azure Databricks        Azure SQL Staging Tables
+ │                                   │
+ ├── JSON Processing                 ▼
+ ├── PySpark Transformations   usp_InsertPipelineAudit
+ ├── Data Validation                  │
+ ├── Business Rules                   ▼
+ └── Medallion Architecture    usp_VerifyFleetTelemetry
+                                        │
+                                        ▼
+                              Curated Azure SQL Database
+                                        │
+                                        ▼
+                               Reporting & Analytics
 ```
 
 ---
 
-# Architecture Pattern
+# ⚙ Pipeline Workflow
 
-The project follows the **Medallion Architecture** to progressively improve data quality.
+## 1. Data Ingestion
 
-### Bronze Layer
+Fleet telemetry is received as JSON files and stored in Azure Blob Storage.
 
-* Raw fleet telemetry ingestion
-* JSON source files
-* Immutable landing data
+The data contains:
 
-### Silver Layer
-
-* Cleansed datasets
-* Data quality validation
-* Standardized schema
-* Business rule enforcement
-
-### Gold Layer
-
-* Analytics-ready datasets
-* Curated business data
-* SQL reporting layer
+* Vehicle ID
+* Driver ID
+* Timestamp
+* Speed
+* Fuel Level
+* Temperature
+* GPS Coordinates
+* Engine Status
 
 ---
 
-# Data Quality Framework
+## 2. Master Pipeline
 
-The solution implements comprehensive validation rules before data is promoted through the pipeline.
+`PL_MasterFleetTelemetry` serves as the orchestration layer for the entire solution.
 
-Validation includes:
+Responsibilities include:
 
-* Vehicle ID format validation
-* Driver ID validation
+* Coordinating pipeline execution
+* Managing dependencies
+* Triggering validation
+* Loading validated data into SQL
+* Monitoring execution flow
+
+---
+
+## 3. Validation Pipeline
+
+The **Run_Validation** activity executes **PL_Databricks_Validation**, which launches an Azure Databricks notebook.
+
+PySpark performs:
+
+* JSON ingestion
+* Schema enforcement
+* Data cleansing
+* Business transformations
+* Medallion Architecture processing
+* Validation against business rules
+
+Validated datasets are written back to Azure Blob Storage for downstream consumption.
+
+---
+
+## 4. SQL Load Pipeline
+
+After successful validation, **Run_LoadToSQL** executes.
+
+The pipeline performs:
+
+### Copy Activity
+
+Validated telemetry is copied into Azure SQL staging tables.
+
+### Stored Procedure
+
+**usp_InsertPipelineAudit**
+
+Records pipeline metadata including:
+
+* Pipeline Name
+* Execution Time
+* Status
+* Row Count
+* Audit Timestamp
+
+### Stored Procedure
+
+**usp_VerifyFleetTelemetry**
+
+Performs SQL-based validation to verify:
+
+* Vehicle ID format
+* Driver ID format
+* Missing timestamps
+* Temperature range
+* Speed limits
+* Fuel level range
+* GPS coordinates
+* Engine status values
+
+The procedure generates validation metrics that support operational monitoring and data quality reporting.
+
+---
+
+# 🧹 Data Quality Framework
+
+The platform validates every incoming telemetry record before it reaches the reporting layer.
+
+Implemented validation rules include:
+
+* Vehicle ID format (`TRK######`)
+* Driver ID format (`DRV#####`)
 * Timestamp validation
-* Temperature range checks
-* Vehicle speed validation
+* Temperature range validation
+* Speed range validation
 * Fuel level validation
-* Latitude and longitude validation
+* Latitude validation
+* Longitude validation
 * Engine status validation
 * Null value detection
-* Invalid record reporting
-* SQL-based validation summaries
 
-Each validation rule is independently verified to provide detailed data quality metrics and identify invalid records by column.
+Validation metrics are generated both during PySpark processing and through SQL verification procedures.
 
 ---
 
-# Azure Services Used
+# 🏛 Medallion Architecture
 
-* Azure Databricks
+The project follows the Medallion Architecture pattern to progressively improve data quality.
+
+### 🥉 Bronze
+
+* Raw JSON ingestion
+* Immutable landing data
+
+### 🥈 Silver
+
+* Cleansed datasets
+* Standardized schema
+* Business rule validation
+* Data quality enforcement
+
+### 🥇 Gold
+
+* Curated business-ready datasets
+* SQL reporting layer
+* Analytics-ready data
+
+---
+
+# ☁ Azure Services
+
 * Azure Data Factory
+* Azure Databricks
 * Azure Blob Storage
 * Azure SQL Database
 * Azure DevOps
@@ -122,132 +220,118 @@ Each validation rule is independently verified to provide detailed data quality 
 
 ---
 
-# Technologies
+# 💻 Technologies
+
+### Data Engineering
 
 * PySpark
 * Spark SQL
-* SQL Server (T-SQL)
+* T-SQL
 * JSON
-* Azure Data Factory Pipelines
-* Azure Databricks Notebooks
-* Incremental Data Loading
+
+### Azure
+
+* Azure Data Factory
+* Azure Databricks
+* Azure SQL Database
+* Azure Blob Storage
+
+### Engineering Practices
+
+* ETL / ELT Pipelines
+* Incremental Loading
+* Medallion Architecture
+* Data Validation Framework
+* Pipeline Auditing
 * CI/CD Integration
 * Git Version Control
-* Medallion Architecture
-* ETL / ELT Design Patterns
 
 ---
 
-# Pipeline Components
+# 🚀 Key Features
 
-### Master Pipeline
-
-Coordinates the complete workflow and controls execution of downstream pipelines.
-
-### Data Validation Pipeline
-
-Executes data quality checks and validates telemetry records against predefined business rules before promotion.
-
-### Azure SQL Copy Pipeline
-
-Moves validated and transformed datasets from Azure Blob Storage into Azure SQL Database for reporting and analytics.
-
----
-
-# Key Features
-
-* End-to-end Azure Data Engineering solution
-* Enterprise Medallion Architecture
-* Automated ETL pipeline orchestration
-* JSON telemetry ingestion
+* Enterprise Azure Data Engineering architecture
+* End-to-end ETL pipeline
+* Modular Azure Data Factory orchestration
+* Azure Databricks notebook processing
 * PySpark-based transformations
-* Data quality validation framework
+* Business rule validation
+* Data quality monitoring
+* SQL verification procedures
 * Incremental data loading
-* Azure SQL integration
-* Modular pipeline design
-* CI/CD enabled deployment
-* Production-style cloud architecture
+* Pipeline audit logging
+* Automated SQL data loading
+* CI/CD-enabled deployment
+* Production-ready cloud architecture
 
 ---
 
-# Project Highlights
-
-* Enterprise-scale Azure architecture
-* Automated orchestration with Azure Data Factory
-* Cloud-native data engineering workflows
-* Structured data validation and cleansing
-* Scalable JSON processing using Apache Spark
-* SQL-based validation reporting
-* Incremental ingestion strategy
-* Version-controlled development with Git
-* CI/CD pipeline integration for deployment automation
-
----
-
-# Repository Structure
+# 📂 Repository Structure
 
 ```text
 Azure-Fleet-Telemetry-Data-Engineering/
 │
+├── Azure Data Factory/
+│   ├── PL_MasterFleetTelemetry
+│   ├── PL_Databricks_Validation
+│   └── Copy Activities
+│
 ├── Databricks/
-│   ├── Bronze Layer
-│   ├── Silver Layer
-│   ├── Gold Layer
+│   ├── Bronze
+│   ├── Silver
+│   ├── Gold
 │   └── PySpark Notebooks
 │
-├── Azure Data Factory/
-│   ├── Master Pipeline
-│   ├── Data Validation Pipeline
-│   └── Azure SQL Copy Pipeline
-│
 ├── SQL/
-│   ├── Table Scripts
+│   ├── Tables
+│   ├── Stored Procedures
 │   ├── Validation Queries
-│   └── Data Quality Reports
+│   └── Audit Scripts
 │
 ├── Sample Data/
 │   └── FleetTelemetry.json
 │
 ├── Architecture/
-│   └── Solution Diagrams
+│   └── Solution Diagram
 │
 └── README.md
 ```
 
 ---
 
-# Learning Outcomes
-
-This project demonstrates practical experience in:
+# 🎯 Skills Demonstrated
 
 * Azure Data Engineering
-* Azure Databricks
 * Azure Data Factory
+* Azure Databricks
 * PySpark Development
-* SQL Data Validation
-* Cloud ETL Design
-* Incremental Data Processing
-* Enterprise Data Architecture
+* Spark SQL
 * Azure SQL Database
-* CI/CD Implementation
-* Data Quality Engineering
+* JSON Processing
+* ETL Pipeline Design
+* Incremental Data Loading
+* Data Validation Framework
+* Stored Procedure Development
+* Pipeline Auditing
 * Medallion Architecture
+* CI/CD Integration
+* Enterprise Data Architecture
 
 ---
 
-# Future Enhancements
+# 🔮 Future Enhancements
 
-* Real-time streaming using Azure Event Hubs
 * Delta Lake implementation
 * Unity Catalog integration
+* Real-time ingestion with Azure Event Hubs
 * Power BI dashboards
-* Azure Monitor and Log Analytics
-* Automated alerting for failed validations
+* Azure Monitor integration
+* Automated data quality alerts
 * Data lineage and governance
-* Performance optimization and partitioning
+* Performance optimization using partitioning
 
 ---
 
-## Author
+## 👨‍💻 Author
 
-Developed as an end-to-end Azure Data Engineering portfolio project demonstrating enterprise-grade data ingestion, transformation, orchestration, validation, and deployment practices using the Microsoft Azure ecosystem.
+This project was developed as an enterprise-style Azure Data Engineering portfolio demonstrating cloud-native data ingestion, transformation, orchestration, validation, auditing, incremental loading, and deployment using the Microsoft Azure ecosystem and industry-standard data engineering practices.
