@@ -1,0 +1,126 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "df001max50"
+		},
+		"AzureBlobStorage_LS01_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_LS01'"
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricksDeltaLake1'"
+		},
+		"AzureSqlDatabase_LS01_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase_LS01'"
+		},
+		"LS_AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_AzureDatabricks1'"
+		},
+		"SQL_Storage_LS_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SQL_Storage_LS'"
+		},
+		"AzureSqlDatabase_LS01_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "fleet-sql-server863790.database.windows.net"
+		},
+		"AzureSqlDatabase_LS01_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "FleetTelemetryDB"
+		},
+		"AzureSqlDatabase_LS01_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "adminuser863790"
+		},
+		"LS_AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0626-142330-1nj0d0o2"
+		},
+		"SQL_Storage_LS_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "fleet-sql-server863790.database.windows.net"
+		},
+		"SQL_Storage_LS_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "FleetTelemetryDB"
+		},
+		"SQL_Storage_LS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "adminuser863790"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "df001max50_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_LS01_connectionString": {
+						"value": "[parameters('AzureBlobStorage_LS01_connectionString')]"
+					},
+					"AzureDatabricksDeltaLake1_accessToken": {
+						"value": "[parameters('AzureDatabricksDeltaLake1_accessToken')]"
+					},
+					"AzureSqlDatabase_LS01_password": {
+						"value": "[parameters('AzureSqlDatabase_LS01_password')]"
+					},
+					"LS_AzureDatabricks1_accessToken": {
+						"value": "[parameters('LS_AzureDatabricks1_accessToken')]"
+					},
+					"SQL_Storage_LS_password": {
+						"value": "[parameters('SQL_Storage_LS_password')]"
+					},
+					"AzureSqlDatabase_LS01_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase_LS01_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase_LS01_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase_LS01_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase_LS01_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase_LS01_properties_typeProperties_userName')]"
+					},
+					"LS_AzureDatabricks1_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('LS_AzureDatabricks1_properties_typeProperties_existingClusterId')]"
+					},
+					"SQL_Storage_LS_properties_typeProperties_server": {
+						"value": "[parameters('SQL_Storage_LS_properties_typeProperties_server')]"
+					},
+					"SQL_Storage_LS_properties_typeProperties_database": {
+						"value": "[parameters('SQL_Storage_LS_properties_typeProperties_database')]"
+					},
+					"SQL_Storage_LS_properties_typeProperties_userName": {
+						"value": "[parameters('SQL_Storage_LS_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

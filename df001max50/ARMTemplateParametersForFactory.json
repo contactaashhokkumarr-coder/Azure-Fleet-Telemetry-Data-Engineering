@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "df001max50"
+		},
+		"AzureBlobStorage_LS01_connectionString": {
+			"value": ""
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"value": ""
+		},
+		"AzureSqlDatabase_LS01_password": {
+			"value": ""
+		},
+		"LS_AzureDatabricks1_accessToken": {
+			"value": ""
+		},
+		"SQL_Storage_LS_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase_LS01_properties_typeProperties_server": {
+			"value": "fleet-sql-server863790.database.windows.net"
+		},
+		"AzureSqlDatabase_LS01_properties_typeProperties_database": {
+			"value": "FleetTelemetryDB"
+		},
+		"AzureSqlDatabase_LS01_properties_typeProperties_userName": {
+			"value": "adminuser863790"
+		},
+		"LS_AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"value": "0626-142330-1nj0d0o2"
+		},
+		"SQL_Storage_LS_properties_typeProperties_server": {
+			"value": "fleet-sql-server863790.database.windows.net"
+		},
+		"SQL_Storage_LS_properties_typeProperties_database": {
+			"value": "FleetTelemetryDB"
+		},
+		"SQL_Storage_LS_properties_typeProperties_userName": {
+			"value": "adminuser863790"
+		}
+	}
+}
