@@ -1,0 +1,258 @@
+{
+	"name": "PL_Copy_Validated_to SQL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_staging_SQL",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": "part-*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['vehicle_id']"
+								},
+								"sink": {
+									"name": "vehicle_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['driver_id']"
+								},
+								"sink": {
+									"name": "driver_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['timestamp']"
+								},
+								"sink": {
+									"name": "timestamp",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['temperature']"
+								},
+								"sink": {
+									"name": "temperature",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['speed']"
+								},
+								"sink": {
+									"name": "speed",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['fuel_level']"
+								},
+								"sink": {
+									"name": "fuel_level",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['latitude']"
+								},
+								"sink": {
+									"name": "latitude",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['longitude']"
+								},
+								"sink": {
+									"name": "longitude",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['engine_status']"
+								},
+								"sink": {
+									"name": "engine_status",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_StagingJSON",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "staging_DS_SQL01",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SQL_data_verfication",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Pl_audit 2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_VerifyFleetTelemetry]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_Storage_LS",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Merge_FleetTelemetry_File",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy_staging_SQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_MergeFleetTelemetry]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_Storage_LS",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Pl_audit 2",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Merge_FleetTelemetry_File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_InsertPipelineAudit]",
+					"storedProcedureParameters": {
+						"ErrorMessage": {
+							"value": "''",
+							"type": "String"
+						},
+						"PipelineName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RowsCopied": {
+							"value": {
+								"value": "@activity('Copy_staging_SQL').output.rowsCopied",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsInserted": {
+							"value": "0",
+							"type": "Int32"
+						},
+						"RowsUpdated": {
+							"value": "0",
+							"type": "Int32"
+						},
+						"Status": {
+							"value": "Succeeded",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "SQL_Storage_LS",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "TFI_telemetrics_2026"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-29T16:06:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

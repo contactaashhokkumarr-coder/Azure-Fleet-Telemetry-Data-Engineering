@@ -1,0 +1,89 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_LandingJSON",
+						"type": "DatasetReference"
+					},
+					"name": "Source"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_StagingJSON",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_RejectedJSON",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ValidationCheck"
+				},
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          vehicle_id as string,",
+				"          driver_id as string,",
+				"          timestamp as string,",
+				"          temperature as integer,",
+				"          speed as integer,",
+				"          fuel_level as integer,",
+				"          latitude as double,",
+				"          longitude as double,",
+				"          engine_status as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> Source",
+				"Source derive({isValid } = !isNull(vehicle_id)\r",
+				"&& startsWith(vehicle_id,'TRK')\r",
+				"&& !isNull(driver_id)\r",
+				"&& !isNull(timestamp)\r",
+				"&& speed >= 0\r",
+				"&& temperature <= 200\r",
+				"&& fuel_level <= 100) ~> ValidationCheck",
+				"ValidationCheck split({isValid }== true(),",
+				"     {isValid } == false(),",
+				"     disjoint: false) ~> split1@(ValidRecords, InValidRecords)",
+				"split1@ValidRecords sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          vehicle_id as string,",
+				"          driver_id as string,",
+				"          timestamp as string,",
+				"          temperature as integer,",
+				"          speed as integer,",
+				"          fuel_level as integer,",
+				"          latitude as double,",
+				"          longitude as double,",
+				"          engine_status as string,",
+				"          {isValid } as boolean",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"split1@InValidRecords sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
+			]
+		}
+	}
+}

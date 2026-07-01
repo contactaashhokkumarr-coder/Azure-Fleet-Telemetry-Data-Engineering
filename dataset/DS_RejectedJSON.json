@@ -1,0 +1,19 @@
+{
+	"name": "DS_RejectedJSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "rejected"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

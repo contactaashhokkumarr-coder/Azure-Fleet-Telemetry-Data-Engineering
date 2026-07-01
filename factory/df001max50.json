@@ -1,0 +1,15 @@
+{
+	"name": "df001max50",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bc5e29fb-fea4-4e5b-8cee-51b57d73c9f3",
+		"tenantId": "c9fa83d8-19af-4d87-85d3-1f9ef27cbe1d"
+	}
+}

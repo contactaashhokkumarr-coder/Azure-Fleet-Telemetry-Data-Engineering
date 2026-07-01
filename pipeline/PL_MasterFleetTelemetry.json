@@ -1,0 +1,52 @@
+{
+	"name": "PL_MasterFleetTelemetry",
+	"properties": {
+		"activities": [
+			{
+				"name": "Run_Validation",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_databricks_Validation",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Run_LoadToSQL",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Run_Validation",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_Copy_Validated_to SQL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "TFI_telemetrics_2026"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-06-27T11:37:04Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

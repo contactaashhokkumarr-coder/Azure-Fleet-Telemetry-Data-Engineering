@@ -1,0 +1,53 @@
+{
+	"name": "DS_StagingJSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_LS01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "silver"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"vehicle_id": {
+					"type": "string"
+				},
+				"driver_id": {
+					"type": "string"
+				},
+				"timestamp": {
+					"type": "string"
+				},
+				"temperature": {
+					"type": "integer"
+				},
+				"speed": {
+					"type": "integer"
+				},
+				"fuel_level": {
+					"type": "integer"
+				},
+				"latitude": {
+					"type": "number"
+				},
+				"longitude": {
+					"type": "number"
+				},
+				"engine_status": {
+					"type": "string"
+				},
+				"isValid ": {
+					"type": "boolean"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
