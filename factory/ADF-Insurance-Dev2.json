@@ -1,0 +1,15 @@
+{
+	"name": "ADF-Insurance-Dev2",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "05e929ff-0fa9-4d43-8bf4-cd8e86f9aa46",
+		"tenantId": "c9fa83d8-19af-4d87-85d3-1f9ef27cbe1d"
+	}
+}
