@@ -31,6 +31,12 @@
 		},
 		"DS_LS_Live_properties_typeProperties_existingClusterId": {
 			"value": "0704-150842-6mvrfbtu"
+		},
+		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+			"value": "01"
+		},
+		"Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+			"value": "manual"
 		}
 	}
 }

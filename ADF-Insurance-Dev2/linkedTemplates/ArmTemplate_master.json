@@ -43,6 +43,14 @@
 			"type": "string",
 			"defaultValue": "0704-150842-6mvrfbtu"
 		},
+		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+			"type": "string",
+			"defaultValue": "01"
+		},
+		"Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+			"type": "string",
+			"defaultValue": "manual"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -96,6 +104,12 @@
 					},
 					"DS_LS_Live_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
+					},
+					"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+						"value": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]"
+					},
+					"Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+						"value": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_load_type')]"
 					}
 				}
 			},

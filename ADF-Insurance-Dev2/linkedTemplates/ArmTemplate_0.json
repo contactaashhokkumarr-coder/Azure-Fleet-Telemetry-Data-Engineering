@@ -42,6 +42,14 @@
 		"DS_LS_Live_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "0704-150842-6mvrfbtu"
+		},
+		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
+			"type": "string",
+			"defaultValue": "01"
+		},
+		"Manual01_properties_PL_Master_Insurance_parameters_load_type": {
+			"type": "string",
+			"defaultValue": "manual"
 		}
 	},
 	"variables": {
@@ -489,6 +497,41 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/DS_LS_Live')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Manual01')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Master_Insurance",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"pipeline_run_id": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]",
+							"load_type": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_load_type')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2026-07-10T20:30:00",
+						"endTime": "2026-07-11T14:53:00",
+						"timeZone": "India Standard Time",
+						"schedule": {}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Master_Insurance')]"
 			]
 		}
 	]
