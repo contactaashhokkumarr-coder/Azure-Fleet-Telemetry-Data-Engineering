@@ -139,6 +139,66 @@
 					"referenceName": "DS_LS_Live",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "SET_Failed",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "NB_Generic_Bronze",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "NB_Generic_Silver",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "NB_Generic_Gold",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "NB_Generic_SCD2",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "status",
+					"value": "FAILED"
+				}
+			},
+			{
+				"name": "SET_Success",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "NB_Generic_SCD2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "status",
+					"value": "SUCCESS"
+				}
 			}
 		],
 		"parameters": {
