@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-Insurance-Dev2"
 		},
+		"DS_LS_Live_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'DS_LS_Live'"
+		},
 		"LS_ADLS_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_ADLS'"
@@ -19,9 +23,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'LS_Databricks'"
 		},
-		"DS_LS_Live_accessToken": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accessToken' of 'DS_LS_Live'"
+		"DS_LS_Live_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0704-150842-6mvrfbtu"
 		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"type": "string",
@@ -38,10 +42,6 @@
 		"LS_AzureSQL_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "insuranceSql"
-		},
-		"DS_LS_Live_properties_typeProperties_existingClusterId": {
-			"type": "string",
-			"defaultValue": "0704-150842-6mvrfbtu"
 		},
 		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
 			"type": "string",
@@ -78,6 +78,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"DS_LS_Live_accessToken": {
+						"value": "[parameters('DS_LS_Live_accessToken')]"
+					},
 					"LS_ADLS_accountKey": {
 						"value": "[parameters('LS_ADLS_accountKey')]"
 					},
@@ -87,8 +90,8 @@
 					"LS_Databricks_accessToken": {
 						"value": "[parameters('LS_Databricks_accessToken')]"
 					},
-					"DS_LS_Live_accessToken": {
-						"value": "[parameters('DS_LS_Live_accessToken')]"
+					"DS_LS_Live_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
 					},
 					"LS_ADLS_properties_typeProperties_url": {
 						"value": "[parameters('LS_ADLS_properties_typeProperties_url')]"
@@ -101,9 +104,6 @@
 					},
 					"LS_AzureSQL_properties_typeProperties_userName": {
 						"value": "[parameters('LS_AzureSQL_properties_typeProperties_userName')]"
-					},
-					"DS_LS_Live_properties_typeProperties_existingClusterId": {
-						"value": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
 					},
 					"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
 						"value": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]"

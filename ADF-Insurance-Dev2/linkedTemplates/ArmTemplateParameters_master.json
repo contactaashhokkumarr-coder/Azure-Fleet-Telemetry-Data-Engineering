@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "ADF-Insurance-Dev2"
 		},
+		"DS_LS_Live_accessToken": {
+			"value": ""
+		},
 		"LS_ADLS_accountKey": {
 			"value": ""
 		},
@@ -14,8 +17,8 @@
 		"LS_Databricks_accessToken": {
 			"value": ""
 		},
-		"DS_LS_Live_accessToken": {
-			"value": ""
+		"DS_LS_Live_properties_typeProperties_existingClusterId": {
+			"value": "0704-150842-6mvrfbtu"
 		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"value": "https://adlsinsurancedev.dfs.core.windows.net/"
@@ -28,9 +31,6 @@
 		},
 		"LS_AzureSQL_properties_typeProperties_userName": {
 			"value": "insuranceSql"
-		},
-		"DS_LS_Live_properties_typeProperties_existingClusterId": {
-			"value": "0704-150842-6mvrfbtu"
 		},
 		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
 			"value": "01"
