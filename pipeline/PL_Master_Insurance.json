@@ -119,7 +119,10 @@
 				"typeProperties": {
 					"notebookPath": "/InsuranceProject/framework/05_SCD2_Framework",
 					"baseParameters": {
-						"table_name": "@variables('table_name')",
+						"table_name": {
+							"value": "@pipeline().parameters.table_name",
+							"type": "Expression"
+						},
 						"pipeline_run_id": "@pipeline().RunId"
 					}
 				},
