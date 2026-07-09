@@ -1,0 +1,29 @@
+{
+	"name": "Manual01",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_Master_Insurance",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"pipeline_run_id": "01",
+					"load_type": "manual"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-07-10T20:30:00",
+				"endTime": "2026-07-11T14:53:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
