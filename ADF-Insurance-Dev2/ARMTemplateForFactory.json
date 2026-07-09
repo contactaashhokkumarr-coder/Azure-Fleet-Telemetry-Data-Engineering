@@ -253,30 +253,9 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "SET_Table_Name",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "table_name",
-							"value": "Customer"
-						}
-					},
-					{
 						"name": "NB_Generic_Bronze",
 						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "SET_Table_Name",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -288,7 +267,10 @@
 						"typeProperties": {
 							"notebookPath": "/InsuranceProject/bronze/01_Generic_Bronze_Loader",
 							"baseParameters": {
-								"table_name": "@variables('table_name')",
+								"table_name": {
+									"value": "@pipeline().parameters.table_name",
+									"type": "Expression"
+								},
 								"pipeline_run_id": "@pipeline().RunId"
 							}
 						},
@@ -319,7 +301,10 @@
 						"typeProperties": {
 							"notebookPath": "/InsuranceProject/silver/03_Generic_Silver_Loader",
 							"baseParameters": {
-								"table_name": "@variables('table_name')",
+								"table_name": {
+									"value": "@pipeline().parameters.table_name",
+									"type": "Expression"
+								},
 								"pipeline_run_id": "@pipeline().RunId"
 							}
 						},
@@ -350,7 +335,10 @@
 						"typeProperties": {
 							"notebookPath": "/InsuranceProject/gold/04_Generic_Gold_Loader",
 							"baseParameters": {
-								"table_name": "@variables('table_name')",
+								"table_name": {
+									"value": "@pipeline().parameters.table_name",
+									"type": "Expression"
+								},
 								"pipeline_run_id": "@pipeline().RunId"
 							}
 						},
@@ -462,6 +450,10 @@
 					"load_type": {
 						"type": "string",
 						"defaultValue": "FULL"
+					},
+					"table_name": {
+						"type": "string",
+						"defaultValue": "Customer"
 					}
 				},
 				"variables": {
