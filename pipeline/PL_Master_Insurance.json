@@ -21,7 +21,10 @@
 							"value": "@pipeline().parameters.table_name",
 							"type": "Expression"
 						},
-						"pipeline_run_id": "@pipeline().RunId"
+						"pipeline_run_id": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
@@ -55,7 +58,10 @@
 							"value": "@pipeline().parameters.table_name",
 							"type": "Expression"
 						},
-						"pipeline_run_id": "@pipeline().RunId"
+						"pipeline_run_id": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
@@ -89,7 +95,10 @@
 							"value": "@pipeline().parameters.table_name",
 							"type": "Expression"
 						},
-						"pipeline_run_id": "@pipeline().RunId"
+						"pipeline_run_id": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
@@ -123,7 +132,10 @@
 							"value": "@pipeline().parameters.table_name",
 							"type": "Expression"
 						},
-						"pipeline_run_id": "@pipeline().RunId"
+						"pipeline_run_id": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
@@ -216,6 +228,9 @@
 			"error_message": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "Insurance ADF"
 		},
 		"annotations": []
 	}
