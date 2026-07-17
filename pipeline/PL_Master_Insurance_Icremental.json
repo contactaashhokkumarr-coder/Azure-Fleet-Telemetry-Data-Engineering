@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/InsuranceProject/bronze/03_Generic_Bronze_Final",
+					"notebookPath": "/Insurance_Project/bronze/Generic_Bronze_Loader_Final",
 					"baseParameters": {
 						"table_name": {
 							"value": "@pipeline().parameters.table_name",
