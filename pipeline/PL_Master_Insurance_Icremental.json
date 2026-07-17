@@ -52,7 +52,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/InsuranceProject/silver/(Clone) 03_Generic_Silver_Loader",
+					"notebookPath": "/Insurance_Project/silver/:Clone) 03_Generic_Silver_Loader",
 					"baseParameters": {
 						"table_name": {
 							"value": "@pipeline().parameters.table_name",
@@ -89,7 +89,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/InsuranceProject/gold/(Clone) 04_Generic_Gold_Loader",
+					"notebookPath": "/Insurance_Project/gold/Clone) 04_Generic_Gold_Loader",
 					"baseParameters": {
 						"table_name": {
 							"value": "@pipeline().parameters.table_name",
@@ -126,7 +126,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/InsuranceProject/framework/(Clone) 05_SCD2_Framework",
+					"notebookPath": "/Insurance_Project/framework/Clone) 05_SCD2_Framework",
 					"baseParameters": {
 						"table_name": {
 							"value": "@pipeline().parameters.table_name",
