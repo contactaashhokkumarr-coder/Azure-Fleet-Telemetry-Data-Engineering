@@ -23,6 +23,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'LS_Databricks'"
 		},
+		"ls_adls_2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_adls_2'"
+		},
+		"LS2AzureSqlDatabase1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS2AzureSqlDatabase1'"
+		},
 		"DS_LS_Live_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "0717-080219-r8dixgo2"
@@ -50,6 +58,22 @@
 		"Manual01_properties_PL_Master_Insurance_parameters_load_type": {
 			"type": "string",
 			"defaultValue": "manual"
+		},
+		"ls_adls_2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsinsurancedevstorage.dfs.core.windows.net/"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "insuranceserver02.database.windows.net"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "insuranceDBnew"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "InsuranceSql"
 		},
 		"containerUri": {
 			"type": "string",
@@ -90,6 +114,12 @@
 					"LS_Databricks_accessToken": {
 						"value": "[parameters('LS_Databricks_accessToken')]"
 					},
+					"ls_adls_2_accountKey": {
+						"value": "[parameters('ls_adls_2_accountKey')]"
+					},
+					"LS2AzureSqlDatabase1_password": {
+						"value": "[parameters('LS2AzureSqlDatabase1_password')]"
+					},
 					"DS_LS_Live_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
 					},
@@ -104,6 +134,18 @@
 					},
 					"LS_AzureSQL_properties_typeProperties_userName": {
 						"value": "[parameters('LS_AzureSQL_properties_typeProperties_userName')]"
+					},
+					"ls_adls_2_properties_typeProperties_url": {
+						"value": "[parameters('ls_adls_2_properties_typeProperties_url')]"
+					},
+					"LS2AzureSqlDatabase1_properties_typeProperties_server": {
+						"value": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_server')]"
+					},
+					"LS2AzureSqlDatabase1_properties_typeProperties_database": {
+						"value": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_database')]"
+					},
+					"LS2AzureSqlDatabase1_properties_typeProperties_userName": {
+						"value": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_userName')]"
 					},
 					"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
 						"value": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]"
