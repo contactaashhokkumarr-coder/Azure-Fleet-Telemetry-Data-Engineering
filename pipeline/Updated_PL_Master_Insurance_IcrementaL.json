@@ -20,17 +20,12 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "catalog_name",
-						"value": "@pipeline().parameters.catalog_name"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"notebookPath": "/Insurance_Project/bronze/Updated_Generic_Bronze_loader",
 					"baseParameters": {
-						"table_name": {
-							"value": "@pipeline().parameters.table_name",
+						"catalog_name": {
+							"value": "@pipeline().parameters.catalog_name",
 							"type": "Expression"
 						},
 						"pipeline_run_id": {
@@ -66,10 +61,7 @@
 				"typeProperties": {
 					"notebookPath": "/Insurance_Project/silver/Updated_Generic_SIilver_loader",
 					"baseParameters": {
-						"table_name": {
-							"value": "@pipeline().parameters.table_name",
-							"type": "Expression"
-						},
+						"catalog_name": "@pipeline().parameters.catalog_name",
 						"pipeline_run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
@@ -103,10 +95,7 @@
 				"typeProperties": {
 					"notebookPath": "/Insurance_Project/gold/Updated_Generic_Gold_loader",
 					"baseParameters": {
-						"table_name": {
-							"value": "@pipeline().parameters.table_name",
-							"type": "Expression"
-						},
+						"catalog_name": "@pipeline().parameters.catalog_name",
 						"pipeline_run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
@@ -140,8 +129,8 @@
 				"typeProperties": {
 					"notebookPath": "/Insurance_Project/framework/Updated_SCD_Type2_Framwork",
 					"baseParameters": {
-						"table_name": {
-							"value": "@pipeline().parameters.table_name",
+						"catalog_name": {
+							"value": "@pipeline().parameters.catalog_name",
 							"type": "Expression"
 						},
 						"pipeline_run_id": {
