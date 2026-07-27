@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'DS_LS_Live'"
 		},
+		"LS2AzureSqlDatabase1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS2AzureSqlDatabase1'"
+		},
 		"LS_ADLS_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_ADLS'"
@@ -27,13 +31,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_2'"
 		},
-		"LS2AzureSqlDatabase1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'LS2AzureSqlDatabase1'"
-		},
 		"DS_LS_Live_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "0717-080219-r8dixgo2"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "insuranceserver02.database.windows.net"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "insuranceDBnew"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "InsuranceSql"
 		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"type": "string",
@@ -54,18 +66,6 @@
 		"ls_adls_2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://adlsinsurancedevstorage.dfs.core.windows.net/"
-		},
-		"LS2AzureSqlDatabase1_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "insuranceserver02.database.windows.net"
-		},
-		"LS2AzureSqlDatabase1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "insuranceDBnew"
-		},
-		"LS2AzureSqlDatabase1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "InsuranceSql"
 		},
 		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
 			"type": "string",
@@ -94,6 +94,28 @@
 						"value": "[parameters('DS_LS_Live_accessToken')]"
 					},
 					"existingClusterId": "[parameters('DS_LS_Live_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS2AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_server')]",
+					"database": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS2AzureSqlDatabase1_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -167,28 +189,6 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('ls_adls_2_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS2AzureSqlDatabase1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_server')]",
-					"database": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('LS2AzureSqlDatabase1_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('LS2AzureSqlDatabase1_password')]"
 					}
 				}
 			},
@@ -440,6 +440,24 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS2AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS2AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_Customer_CSV')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -573,24 +591,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS2AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS2AzureSqlDatabase1')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText1sqltoadls')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -604,8 +604,14 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "@item().file_name",
-						"folderPath": "@item().landing_folder",
+						"fileName": {
+							"value": "@item().file_name",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@item().landing_folder",
+							"type": "Expression"
+						},
 						"fileSystem": "landing"
 					},
 					"columnDelimiter": ",",
@@ -897,7 +903,10 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"sqlReaderQuery": "@concat('SELECT * FROM dbo.[', item().table_name, ']')",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT * FROM dbo.[', item().table_name, ']')",
+												"type": "Expression"
+											},
 											"queryTimeout": "02:00:00",
 											"partitionOption": "None"
 										},
@@ -1012,6 +1021,360 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/PL_Master_Insurance')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Updated_PL_Master_Insurance_IcrementaL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "NB_Generic_Bronze",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "ForEach_SQL_To_Landing",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Insurance_Project/bronze/Updated_Generic_Bronze_loader",
+							"baseParameters": {
+								"catalog_name": {
+									"value": "@pipeline().parameters.catalog_name",
+									"type": "Expression"
+								},
+								"pipeline_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "DS_LS_Live",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "NB_Generic_Silver",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "NB_Generic_Bronze",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Insurance_Project/silver/Updated_Generic_SIilver_loader",
+							"baseParameters": {
+								"catalog_name": "@pipeline().parameters.catalog_name",
+								"pipeline_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "DS_LS_Live",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "NB_Generic_Gold",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "NB_Generic_Silver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Insurance_Project/gold/Updated_Generic_Gold_loader",
+							"baseParameters": {
+								"catalog_name": "@pipeline().parameters.catalog_name",
+								"pipeline_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "DS_LS_Live",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "NB_Generic_SCD2",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "NB_Generic_Gold",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Insurance_Project/framework/Updated_SCD_Type2_Framwork",
+							"baseParameters": {
+								"catalog_name": {
+									"value": "@pipeline().parameters.catalog_name",
+									"type": "Expression"
+								},
+								"pipeline_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "DS_LS_Live",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "SET_Failed",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "NB_Generic_Bronze",
+								"dependencyConditions": [
+									"Failed"
+								]
+							},
+							{
+								"activity": "NB_Generic_Silver",
+								"dependencyConditions": [
+									"Failed"
+								]
+							},
+							{
+								"activity": "NB_Generic_Gold",
+								"dependencyConditions": [
+									"Failed"
+								]
+							},
+							{
+								"activity": "NB_Generic_SCD2",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": "FAILED"
+						}
+					},
+					{
+						"name": "SET_Success",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "NB_Generic_SCD2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "status",
+							"value": "SUCCESS"
+						}
+					},
+					{
+						"name": "Lookup_SQL_To_Landing",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT 'Agent'  AS table_name, 'agent'  AS landing_folder, 'Agent.csv'  AS file_name\nUNION ALL\nSELECT 'Branch' AS table_name, 'branch' AS landing_folder, 'Branch.csv' AS file_name\nUNION ALL\nSELECT 'Claim'  AS table_name, 'claim'  AS landing_folder, 'Claim.csv'  AS file_name;",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach_SQL_To_Landing",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup_SQL_To_Landing",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup_SQL_To_Landing').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "Copy_SQL_To_Landing",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT * FROM dbo.[', item().table_name, ']')",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "AzureSqlTable1",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DelimitedText1sqltoadls",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"pipeline_run_id": {
+						"type": "string",
+						"defaultValue": "@{guid()}"
+					},
+					"catalog_name": {
+						"type": "string",
+						"defaultValue": "dbw_insurance"
+					}
+				},
+				"variables": {
+					"table_name": {
+						"type": "String"
+					},
+					"status": {
+						"type": "String"
+					},
+					"error_message": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "Insurance ADF"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/DS_LS_Live')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1sqltoadls')]"
 			]
 		}
 	]

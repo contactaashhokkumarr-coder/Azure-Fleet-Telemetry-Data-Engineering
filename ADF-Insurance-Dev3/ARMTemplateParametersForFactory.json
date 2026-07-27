@@ -8,6 +8,9 @@
 		"DS_LS_Live_accessToken": {
 			"value": ""
 		},
+		"LS2AzureSqlDatabase1_password": {
+			"value": ""
+		},
 		"LS_ADLS_accountKey": {
 			"value": ""
 		},
@@ -20,11 +23,17 @@
 		"ls_adls_2_accountKey": {
 			"value": ""
 		},
-		"LS2AzureSqlDatabase1_password": {
-			"value": ""
-		},
 		"DS_LS_Live_properties_typeProperties_existingClusterId": {
 			"value": "0717-080219-r8dixgo2"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "insuranceserver02.database.windows.net"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "insuranceDBnew"
+		},
+		"LS2AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "InsuranceSql"
 		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"value": "https://adlsinsurancedev.dfs.core.windows.net/"
@@ -38,23 +47,14 @@
 		"LS_AzureSQL_properties_typeProperties_userName": {
 			"value": "insuranceSql"
 		},
+		"ls_adls_2_properties_typeProperties_url": {
+			"value": "https://adlsinsurancedevstorage.dfs.core.windows.net/"
+		},
 		"Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id": {
 			"value": "01"
 		},
 		"Manual01_properties_PL_Master_Insurance_parameters_load_type": {
 			"value": "manual"
-		},
-		"ls_adls_2_properties_typeProperties_url": {
-			"value": "https://adlsinsurancedevstorage.dfs.core.windows.net/"
-		},
-		"LS2AzureSqlDatabase1_properties_typeProperties_server": {
-			"value": "insuranceserver02.database.windows.net"
-		},
-		"LS2AzureSqlDatabase1_properties_typeProperties_database": {
-			"value": "insuranceDBnew"
-		},
-		"LS2AzureSqlDatabase1_properties_typeProperties_userName": {
-			"value": "InsuranceSql"
 		}
 	}
 }
