@@ -22,7 +22,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Insurance_Project/bronze/Updated_Generic_Bronze_loader",
+					"notebookPath": "/Insurance_Project/bronze/Enterprise_Generic_Bronze_Loader_v4",
 					"baseParameters": {
 						"catalog_name": {
 							"value": "@pipeline().parameters.catalog_name",
@@ -59,9 +59,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Insurance_Project/silver/Updated_Generic_SIilver_loader",
+					"notebookPath": "/Insurance_Project/silver/Enterprise_Generic_SIilver_loader_v4",
 					"baseParameters": {
-						"catalog_name": "@pipeline().parameters.catalog_name",
+						"catalog_name": {
+							"value": "@pipeline().parameters.catalog_name",
+							"type": "Expression"
+						},
 						"pipeline_run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
@@ -93,9 +96,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Insurance_Project/gold/Updated_Generic_Gold_loader",
+					"notebookPath": "/Insurance_Project/gold/Enterprise_Generic_Gold_Loader_v4",
 					"baseParameters": {
-						"catalog_name": "@pipeline().parameters.catalog_name",
+						"catalog_name": {
+							"value": "@pipeline().parameters.catalog_name",
+							"type": "Expression"
+						},
 						"pipeline_run_id": {
 							"value": "@pipeline().RunId",
 							"type": "Expression"
@@ -127,7 +133,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Insurance_Project/framework/Updated_SCD_Type2_Framwork",
+					"notebookPath": "/Insurance_Project/framework/Enterprise_Generic_SCD2_Loader_v4",
 					"baseParameters": {
 						"catalog_name": {
 							"value": "@pipeline().parameters.catalog_name",
