@@ -59,7 +59,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Insurance_Project/silver/Enterprise_Generic_SIilver_loader_v4",
+					"notebookPath": "/Insurance_Project/silver/newest_Enterprise_Generic_Silver_loader_v4_FIXED",
 					"baseParameters": {
 						"catalog_name": {
 							"value": "@pipeline().parameters.catalog_name",
