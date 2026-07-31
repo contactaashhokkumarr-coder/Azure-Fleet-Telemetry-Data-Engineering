@@ -990,40 +990,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Manual01')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_Master_Insurance",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"pipeline_run_id": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]",
-							"load_type": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_load_type')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2026-07-10T20:30:00",
-						"endTime": "2026-07-11T14:53:00",
-						"timeZone": "India Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Master_Insurance')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Updated_PL_Master_Insurance_IcrementaL')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1049,7 +1015,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Insurance_Project/bronze/Updated_Generic_Bronze_loader",
+							"notebookPath": "/Insurance_Project/bronze/newest_Enterprise_Generic_Bronze_Loader_v4_FIXED (1)",
 							"baseParameters": {
 								"catalog_name": {
 									"value": "@pipeline().parameters.catalog_name",
@@ -1086,9 +1052,12 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Insurance_Project/silver/Updated_Generic_SIilver_loader",
+							"notebookPath": "/Insurance_Project/silver/newest_Enterprise_Generic_Silver_loader_v4_FIXED",
 							"baseParameters": {
-								"catalog_name": "@pipeline().parameters.catalog_name",
+								"catalog_name": {
+									"value": "@pipeline().parameters.catalog_name",
+									"type": "Expression"
+								},
 								"pipeline_run_id": {
 									"value": "@pipeline().RunId",
 									"type": "Expression"
@@ -1120,9 +1089,12 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Insurance_Project/gold/Updated_Generic_Gold_loader",
+							"notebookPath": "/Insurance_Project/gold/Enterprise_Generic_Gold_Loader_v4",
 							"baseParameters": {
-								"catalog_name": "@pipeline().parameters.catalog_name",
+								"catalog_name": {
+									"value": "@pipeline().parameters.catalog_name",
+									"type": "Expression"
+								},
 								"pipeline_run_id": {
 									"value": "@pipeline().RunId",
 									"type": "Expression"
@@ -1154,7 +1126,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Insurance_Project/framework/Updated_SCD_Type2_Framwork",
+							"notebookPath": "/Insurance_Project/framework/Enterprise_Generic_SCD2_Loader_v4",
 							"baseParameters": {
 								"catalog_name": {
 									"value": "@pipeline().parameters.catalog_name",
@@ -1375,6 +1347,40 @@
 				"[concat(variables('factoryId'), '/linkedServices/DS_LS_Live')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1sqltoadls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Manual01')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Master_Insurance",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"pipeline_run_id": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_pipeline_run_id')]",
+							"load_type": "[parameters('Manual01_properties_PL_Master_Insurance_parameters_load_type')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2026-07-10T20:30:00",
+						"endTime": "2026-07-11T14:53:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_Master_Insurance')]"
 			]
 		}
 	]
